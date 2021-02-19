@@ -30,9 +30,9 @@ function outputMessage(message) {
     const li = document.createElement('li');
     li.classList.add('chat-left');
     li.innerHTML = `<div class="chat-avatar">
-                        <div class="chat-name">Russell</div>
+                        <div class="chat-name">${message.username}</div>
                     </div>
-                    <div class="chat-text">${message}</div>
-                    <div class="chat-hour">08:57 <span class="fa fa-check-circle"></span></div>`;
+                    <div class="chat-text">${message.text}</div>
+                    <div class="chat-hour">${message.time}<span class="fa fa-check-circle"></span></div>`;
     document.getElementById('chat-box').appendChild(li);
 }

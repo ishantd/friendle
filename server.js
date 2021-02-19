@@ -2,6 +2,7 @@ const path = require('path');
 const http = require('http');
 const express = require('express');
 const socketio = require('socket.io');
+const formatMessage = require('./utils/messages');
 
 const app = express();
 const server = http.createServer(app);
@@ -9,11 +10,14 @@ const io = socketio(server);
 
 app.use(express.static(path.join(__dirname, 'public')));
 
+const botName = 'Friendle Bot';
+
 io.on('connection', socket => {
-    socket.emit('message', 'Welcome to Friendle');
+    // welcoming new user
+    socket.emit('message', formatMessage(botName, 'Welcome to Friendle'));
 
     // Send message when any user connects
-    socket.broadcast.emit('message', 'A user has joined the chat');
+    socket.broadcast.emit('message', formatMessage(botName, 'A user has joined the chat'));
 
     // Send message when any user disconnects
     socket.on('disconnect', () => {
@@ -23,7 +27,7 @@ io.on('connection', socket => {
     //Listen for chat messages
 
     socket.on('chatMessage', (msg) => {
-        io.emit('message', msg);
+        io.emit('message', formatMessage('User', msg));
     });
 });
 
