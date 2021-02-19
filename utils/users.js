@@ -23,9 +23,6 @@ function passwordAuth(user) {
 
 function userJoin(id, username, room, password) {
     const user = { id, username, room, password };
-    const authz = passwordAuth(user);
-    const roomz = roomExists(user);
-    console.log(authz, roomz);
     if (roomExists(user)) {
         if (passwordAuth(user)) {
             users.push(user);
