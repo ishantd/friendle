@@ -13,6 +13,11 @@ const socket = io();
 // join room 
 socket.emit('joinRoom', { username, room, password });
 
+// check password
+socket.on('notauth', () => {
+    alert("Wrong Password");
+});
+
 // get room and users 
 socket.on('roomUsers', ({ room, users }) => {
     outputRoomName(room);

@@ -15,20 +15,25 @@ const botName = 'Friendle Bot';
 
 io.on('connection', socket => {
     socket.on('joinRoom', ({ username, room, password }) => {
-        const user = userJoin(socket.id, username, room);
-        socket.join(user.room);
+        const user = userJoin(socket.id, username, room, password);
 
-        // welcoming new user
-        socket.emit('message', formatMessage(botName, 'Welcome to Friendle'));
-    
-        // Send message when any user connects
-        socket.broadcast.to(user.room).emit('message', formatMessage(botName, `${user.username} has joined the chat`));
-        
-        // send user and room info 
-        io.to(user.room).emit('roomUsers', {
-            room: user.room,
-            users: getRoomUsers(user.room)
-        });
+        if (user !== -1) {
+            socket.join(user.room);
+            
+            // welcoming new user
+            socket.emit('message', formatMessage(botName, 'Welcome to Friendle'));
+            
+            // Send message when any user connects
+            socket.broadcast.to(user.room).emit('message', formatMessage(botName, `${user.username} has joined the chat`));
+            
+            // send user and room info 
+            io.to(user.room).emit('roomUsers', {
+                room: user.room,
+                users: getRoomUsers(user.room)
+            });
+        } else {
+            io.emit('notauth', 'Wrong password');    
+        }
     });
 
     //Listen for chat messages    
